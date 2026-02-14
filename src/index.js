@@ -1,22 +1,15 @@
-import express from "express"
+import { app } from "./app.js";
+import connectDB from "./db/config.js";
+import dotenv from "dotenv";
 
-const app = express()
+dotenv.config({
+  path: "./.env"
+});
 
-
-app.get("/",(request,response)=>{
-    response.send("hello world ")
-})
-
-app.get("/about",(request,response)=>{
-    response.send("this is about page")
-})
-
-app.get("/feedback",(request,response)=>{
-response.send("https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSEDaMEoX0Tkzqw74YSBab3HI2czZ14hUpGxq1Wuko5h6hGPVhF")
-})
-
-
-app.listen(3000,()=>{
-    console.log("port 3000 ");
-    
-})
+connectDB()
+  .then(() => {
+    app.listen(process.env.PORT, () => {
+      console.log(`Server running at ${process.env.BASE_URL}`);
+    });
+  })
+  .catch((err) => console.log(err, "error in running our app"));
